@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Hello World - Modern Experience</title>
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 20%, #f0f4ff 0%, #e2e8f5 100%);
+      --card-bg: rgba(255, 255, 255, 0.75);
+      --card-border: rgba(255, 255, 255, 0.9);
+      --card-shadow: 0 20px 45px rgba(30, 41, 59, 0.1);
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --accent-grad: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+      --btn-bg: rgba(255, 255, 255, 0.85);
+      --btn-border: rgba(148, 163, 184, 0.3);
+      --btn-hover-bg: #ffffff;
+      --blob-1: rgba(99, 102, 241, 0.18);
+      --blob-2: rgba(236, 72, 153, 0.15);
+      --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg-gradient: radial-gradient(circle at 50% 15%, #0f172a 0%, #020617 100%);
+        --card-bg: rgba(30, 41, 59, 0.65);
+        --card-border: rgba(255, 255, 255, 0.1);
+        --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65);
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --accent-grad: linear-gradient(135deg, #818cf8 0%, #38bdf8 100%);
+        --btn-bg: rgba(30, 41, 59, 0.7);
+        --btn-border: rgba(255, 255, 255, 0.12);
+        --btn-hover-bg: rgba(51, 65, 85, 0.85);
+        --blob-1: rgba(99, 102, 241, 0.25);
+        --blob-2: rgba(244, 63, 94, 0.2);
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg-gradient: radial-gradient(circle at 50% 15%, #0f172a 0%, #020617 100%);
+      --card-bg: rgba(30, 41, 59, 0.65);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-grad: linear-gradient(135deg, #818cf8 0%, #38bdf8 100%);
+      --btn-bg: rgba(30, 41, 59, 0.7);
+      --btn-border: rgba(255, 255, 255, 0.12);
+      --btn-hover-bg: rgba(51, 65, 85, 0.85);
+      --blob-1: rgba(99, 102, 241, 0.25);
+      --blob-2: rgba(244, 63, 94, 0.2);
+    }
+
+    :root[data-theme="light"] {
+      --bg-gradient: radial-gradient(circle at 50% 20%, #f0f4ff 0%, #e2e8f5 100%);
+      --card-bg: rgba(255, 255, 255, 0.75);
+      --card-border: rgba(255, 255, 255, 0.9);
+      --card-shadow: 0 20px 45px rgba(30, 41, 59, 0.1);
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --accent-grad: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+      --btn-bg: rgba(255, 255, 255, 0.85);
+      --btn-border: rgba(148, 163, 184, 0.3);
+      --btn-hover-bg: #ffffff;
+      --blob-1: rgba(99, 102, 241, 0.18);
+      --blob-2: rgba(236, 72, 153, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: env(safe-area-inset-top, 20px) env(safe-area-inset-right, 20px) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 20px);
+      transition: background var(--transition-base), color var(--transition-base);
+    }
+    /* 背景光暈動畫 */
+    .bg-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      pointer-events: none;
+      animation: float 14s infinite ease-in-out alternate;
+    }
+
+    .blob-1 {
+      width: 420px;
+      height: 420px;
+      top: 10%;
+      left: 15%;
+      background: var(--blob-1);
+    }
+
+    .blob-2 {
+      width: 380px;
+      height: 380px;
+      bottom: 12%;
+      right: 15%;
+      background: var(--blob-2);
+      animation-delay: -6s;
+    }
+
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -25px) scale(1.08); }
+      100% { transform: translate(-25px, 20px) scale(0.95); }
+    }
+
+    /* 頂部操作按鈕 */
+    .header-actions {
+      position: absolute;
+      top: max(20px, env(safe-area-inset-top, 20px));
+      right: max(20px, env(safe-area-inset-right, 20px));
+      z-index: 10;
+    }
+
+    .theme-toggle-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      color: var(--text-main);
+      padding: 9px 16px;
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: all var(--transition-base);
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--btn-hover-bg);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 毛玻璃卡片 */
+    .glass-card {
+      position: relative;
+      z-index: 1;
+      width: 90%;
+      max-width: 620px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      box-shadow: var(--card-shadow);
+      padding: clamp(2rem, 5vw, 3.5rem);
+      text-align: center;
+      animation: enterCard 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    }
+
+    @keyframes enterCard {
+      from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(99, 102, 241, 0.12);
+      color: #6366f1;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    :root[data-theme="dark"] .badge,
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .badge {
+        background: rgba(129, 140, 248, 0.2);
+        color: #a5b4fc;
+      }
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 8px currentColor;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 8vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      background: var(--accent-grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    .description {
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 480px;
+      margin: 0 auto 2rem;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all var(--transition-base);
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent-grad);
+      color: #ffffff;
+      box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.38);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 26px -6px rgba(99, 102, 241, 0.5);
+    }
+
+    .btn-secondary {
+      background: var(--btn-bg);
+      color: var(--text-main);
+      border: 1px solid var(--btn-border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--btn-hover-bg);
+      transform: translateY(-2px);
+    }
+
+    .counter-toast {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      min-height: 20px;
+      transition: opacity 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <!-- 背景流動光暈動畫 -->
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+
+  <!-- 頂部主題切換按鈕 -->
+  <header class="header-actions">
+    <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="切換深淺色外觀">
+      <span id="themeIcon">🌓</span>
+      <span id="themeText">主題</span>
+    </button>
+  </header>
+
+  <!-- 主體毛玻璃卡片 -->
+  <main class="glass-card">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Welcome aboard
+    </div>
+    <h1>Hello, World!</h1>
+    <p class="description">
+      這是一個採用現代毛玻璃擬物設計（Glassmorphism）、自適應深淺色外觀與流暢互動微動畫的精緻起始頁面。
+    </p>
+
+    <div class="button-group">
+      <button class="btn btn-primary" id="waveBtn">
+        <span>👋 打個招呼</span>
+      </button>
+      <button class="btn btn-secondary" id="exploreBtn">
+        <span>✨ 探索更多</span>
+      </button>
+    </div>
+
+    <div class="counter-toast" id="statusMessage">點擊上方按鈕試試互動效果</div>
+  </main>
+
+  <script>
+    // 主題切換邏輯
+    const htmlElement = document.documentElement;
+    const themeBtn = document.getElementById('themeToggleBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+
+    function updateThemeUI(theme) {
+      if (theme === 'dark') {
+        themeIcon.textContent = '🌙';
+        themeText.textContent = '深色';
+      } else if (theme === 'light') {
+        themeIcon.textContent = '☀️';
+        themeText.textContent = '淺色';
+      } else {
+        themeIcon.textContent = '🌓';
+        themeText.textContent = '系統';
+      }
+    }
+
+    // 讀取本地偏好
+    const savedTheme = localStorage.getItem('user-theme');
+    if (savedTheme) {
+      htmlElement.setAttribute('data-theme', savedTheme);
+      updateThemeUI(savedTheme);
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      updateThemeUI(prefersDark ? 'dark' : 'light');
+    }
+
+    // 點擊手動切換主題
+    themeBtn.addEventListener('click', () => {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      let newTheme = 'dark';
+      
+      if (!currentTheme) {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        newTheme = prefersDark ? 'light' : 'dark';
+      } else if (currentTheme === 'dark') {
+        newTheme = 'light';
+      } else {
+        newTheme = 'dark';
+      }
+
+      htmlElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('user-theme', newTheme);
+      updateThemeUI(newTheme);
+    });
+
+    // 互動按鈕微體驗
+    let waveCount = 0;
+    const waveBtn = document.getElementById('waveBtn');
+    const exploreBtn = document.getElementById('exploreBtn');
+    const statusMsg = document.getElementById('statusMessage');
+
+    waveBtn.addEventListener('click', () => {
+      waveCount++;
+      statusMsg.textContent = `🎉 你已經跟世界打了 ${waveCount} 次招呼！`;
+    });
+
+    exploreBtn.addEventListener('click', () => {
+      statusMsg.textContent = '🚀 靈感隨處可見，開始打造你的下一個精彩專案！';
+    });
+  </script>
+</body>
+</html>
